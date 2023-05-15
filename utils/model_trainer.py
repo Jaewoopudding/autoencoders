@@ -28,7 +28,7 @@ def autoencoder_trainer(model, criteria, optimizer, train_loader,
 
 
 def vae_trainer(model, criteria, optimizer, train_loader,
-                test_loader, device, epochs):
+                test_loader, device, epochs, beta=1):
     train_loss = []
     test_loss = []
     for epoch in tqdm.tqdm(range(epochs)):
@@ -39,7 +39,7 @@ def vae_trainer(model, criteria, optimizer, train_loader,
             reconstruction_loss, kl_loss = criteria(reconstruct, x, mu, logvar)
             reconstruction_loss = reconstruction_loss / x.shape[0]
             kl_loss = kl_loss / x.shape[0]
-            loss = reconstruction_loss + kl_loss
+            loss = reconstruction_loss + beta * kl_loss
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -52,7 +52,7 @@ def vae_trainer(model, criteria, optimizer, train_loader,
             reconstruction_loss, kl_loss = criteria(reconstruct, x, mu, logvar)
             reconstruction_loss = reconstruction_loss / x.shape[0]
             kl_loss = kl_loss / x.shape[0]
-            loss = reconstruction_loss + kl_loss
+            loss = reconstruction_loss + beta * kl_loss
             test_loss.append(loss.item())
             
         print(f'epochs: {epoch + 1} - Train loss: {train_loss[-1]} - Test loss: {test_loss[-1]}')
