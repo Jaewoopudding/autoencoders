@@ -11,3 +11,4 @@ def visualization(loader, model, device, num_of_samples=5):
             ax[i, 1].imshow(recon[i].cpu().view(28, 28).detach().numpy())
         plt.show()
         break
+    
