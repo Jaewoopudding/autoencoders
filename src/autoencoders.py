@@ -111,4 +111,3 @@ class VariationalAutoEncoder(Autoencoder):
     def generate(self, samples):
         eps = torch.randn((samples, self.z_dim))
         return self.decoder(eps).detach().cpu().numpy()
-        
